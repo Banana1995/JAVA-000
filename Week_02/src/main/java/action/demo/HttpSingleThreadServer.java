@@ -1,9 +1,10 @@
-package netty.action.server;
+package action.demo;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+
 
 public class HttpSingleThreadServer {
     public static void main(String[] args) throws IOException{
@@ -17,7 +18,6 @@ public class HttpSingleThreadServer {
             }
         }
     }
-
     private static void service(Socket socket) {
         try {
             Thread.sleep(20);
