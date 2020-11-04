@@ -2,6 +2,7 @@ package com.weekthree.netty.action.nettyclient;
 
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.DefaultFullHttpResponse;
+import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.FullHttpResponse;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -15,7 +16,7 @@ import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
 public class NettyOkHttpClient {
 
 
-    public FullHttpResponse doHttpReq() {
+    public FullHttpResponse doHttpReq(FullHttpRequest fullRequest) {
         FullHttpResponse fullHttpResponse = null;
         okhttp3.OkHttpClient client = new okhttp3.OkHttpClient();
         try {

@@ -1,5 +1,6 @@
 package com.weekthree.netty.action.nettyclient;
 
+import com.weekthree.netty.action.filter.HeadNameFilter;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
@@ -12,6 +13,9 @@ public class GatewayInit extends ChannelInitializer {
         ChannelPipeline pipeline = channel.pipeline();
         pipeline.addLast(new HttpServerCodec());
         pipeline.addLast(new HttpObjectAggregator(1024 * 1024));
-        pipeline.addLast(new GatewayHandler());
+        GatewayHandler gatewayHandler = new GatewayHandler();
+        HeadNameFilter headNameFilter = new HeadNameFilter();
+        gatewayHandler.setHeadNameFilter(headNameFilter);
+        pipeline.addLast(gatewayHandler);
     }
 }

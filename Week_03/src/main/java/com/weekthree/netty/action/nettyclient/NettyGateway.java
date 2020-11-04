@@ -55,6 +55,16 @@ public class NettyGateway {
             bossEventLoop.shutdownGracefully();
             workerEventLoop.shutdownGracefully();
         }
+        Runnable runnable = new Runnable() {
+            private int abc;
+            @Override
+            public void run() {
+                int cc = abc + 3;
+                System.out.println(cc);
+            }
+        };
+        Thread thread = new Thread();
+        thread.run();
 
     }
 
