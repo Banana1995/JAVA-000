@@ -3,9 +3,12 @@ package com.content.concurrent;
 import java.util.concurrent.*;
 
 public class HomeWorkMain {
-    public static void main(String[] args) {
-
-
+    public static void main(String[] args) throws ExecutionException, InterruptedException {
+        HomeWorkMain homeWorkMain = new HomeWorkMain();
+        homeWorkMain.asynmethod1();
+        homeWorkMain.asynmethod2();
+        homeWorkMain.asynmethod3();
+        homeWorkMain.asynmethod4();
     }
 
     private void asynmethod1() {
@@ -33,12 +36,13 @@ public class HomeWorkMain {
         // 确保  拿到result 并输出
         System.out.println("异步计算结果为：" + result);
         System.out.println("使用时间：" + (System.currentTimeMillis() - start) + " ms");
+        executorService.shutdown();
     }
 
     private void asynmethod2() {
         long start = System.currentTimeMillis();
         // 在这里创建一个线程或线程池，
-        System.out.println("方法2：使用线程池执行futuretask，使用future或futuretask获取值");
+        System.out.println("方法2：使用线程池执行futuretask，使用futuretask获取值");
         // 异步执行 下面方法
         Callable callable = new Callable() {
             @Override
@@ -49,10 +53,8 @@ public class HomeWorkMain {
         FutureTask task = new FutureTask(callable);
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         Future callFuture = executorService.submit(task);
-        int result = 0; //这是得到的返回值
         int taskresult = 0; //这是得到的返回值
         try {
-            result = (Integer) callFuture.get();
             taskresult = (Integer) task.get();
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -60,9 +62,9 @@ public class HomeWorkMain {
             e.printStackTrace();
         }
         // 确保  拿到result 并输出
-        System.out.println("future异步计算结果为：" + result);
         System.out.println("futuretask异步计算结果为：" + taskresult);
         System.out.println("使用时间：" + (System.currentTimeMillis() - start) + " ms");
+        executorService.shutdown();
     }
 
     private void asynmethod3() {
