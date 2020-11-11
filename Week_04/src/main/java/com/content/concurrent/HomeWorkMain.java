@@ -3,13 +3,13 @@ package com.content.concurrent;
 import java.util.concurrent.*;
 
 public class HomeWorkMain {
-    public static void main(String[] args) throws ExecutionException, InterruptedException {
-        HomeWorkMain homeWorkMain = new HomeWorkMain();
-        homeWorkMain.asynmethod1();
-        homeWorkMain.asynmethod2();
-        homeWorkMain.asynmethod3();
-        homeWorkMain.asynmethod4();
-    }
+//    public static void main(String[] args) throws ExecutionException, InterruptedException {
+//        HomeWorkMain homeWorkMain = new HomeWorkMain();
+//        homeWorkMain.asynmethod1();
+//        homeWorkMain.asynmethod2();
+//        homeWorkMain.asynmethod3();
+//        homeWorkMain.asynmethod4();
+//    }
 
     private void asynmethod1() {
         long start = System.currentTimeMillis();
@@ -81,7 +81,6 @@ public class HomeWorkMain {
         FutureTask task = new FutureTask(callable);
         Thread thread = new Thread(task);
         thread.start();
-
         int result = 0; //这是得到的返回值
         try {
             result = (Integer) task.get();
@@ -115,4 +114,46 @@ public class HomeWorkMain {
             return 1;
         return fibo(a - 1) + fibo(a - 2);
     }
+
+    public static void main(String[] args) {
+        HomeWorkMain homeWorkMain = new HomeWorkMain();
+        homeWorkMain.tre();
+    }
+
+    private void tre() {
+        Object oo = new Object();
+        MyThread thread1 = new MyThread("thread1 -- ");
+        thread1.setOo(oo);
+        thread1.start();
+        synchronized (oo) {
+            for (int i = 0; i < 100; i++) {
+                if (i == 20) {
+                    try {
+                        oo.wait(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                System.out.println(Thread.currentThread().getName() + " -- " + i);
+            }
+        }
+    }
+static class MyThread extends Thread {
+    private String name;
+    private Object oo;
+    public void setOo(Object oo) {
+        this.oo = oo;
+    }
+    public MyThread(String name) {
+        this.name = name;
+    }
+    @Override
+    public void run() {
+        synchronized (oo) {
+            for (int i = 0; i < 100; i++) {
+                System.out.println(name + i);
+            }
+        }
+    }
+}
 }
