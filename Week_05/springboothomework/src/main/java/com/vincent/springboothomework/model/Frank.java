@@ -42,12 +42,14 @@ public class Frank implements People {
 
     @Override
     public String getName() {
-        return null;
+        return name;
+
     }
+
 
     @Override
     public String getSkinColor() {
-        return null;
+        return skinColor;
     }
 
     @Override

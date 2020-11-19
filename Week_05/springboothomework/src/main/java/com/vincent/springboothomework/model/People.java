@@ -6,6 +6,9 @@ public interface People {
 
     String getSkinColor();
 
+    int getAge();
+
+    String getHabit();
     String shakeHands(String yourname);
 
 }
