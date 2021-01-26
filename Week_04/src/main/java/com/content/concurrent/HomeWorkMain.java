@@ -1,6 +1,8 @@
 package com.content.concurrent;
 
 import java.util.concurrent.*;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class HomeWorkMain {
 //    public static void main(String[] args) throws ExecutionException, InterruptedException {
@@ -94,16 +96,16 @@ public class HomeWorkMain {
         System.out.println("使用时间：" + (System.currentTimeMillis() - start) + " ms");
     }
 
-    private void asynmethod4() throws ExecutionException, InterruptedException {
-        long start = System.currentTimeMillis();
-        // 在这里创建一个线程或线程池，
-        System.out.println("方法4：用CompetableFuture获取值");
-
-        int result = CompletableFuture.supplyAsync(HomeWorkMain::sum).get(); //这是得到的返回值
-        // 确保  拿到result 并输出
-        System.out.println("异步计算结果为：" + result);
-        System.out.println("使用时间：" + (System.currentTimeMillis() - start) + " ms");
-    }
+//    private void asynmethod4() throws ExecutionException, InterruptedException {
+//        long start = System.currentTimeMillis();
+//        // 在这里创建一个线程或线程池，
+//        System.out.println("方法4：用CompetableFuture获取值");
+//
+//        int result = CompletableFuture.supplyAsync(HomeWorkMain::sum).get(); //这是得到的返回值
+//        // 确保  拿到result 并输出
+//        System.out.println("异步计算结果为：" + result);
+//        System.out.println("使用时间：" + (System.currentTimeMillis() - start) + " ms");
+//    }
 
     private static int sum() {
         return fibo(36);
@@ -121,39 +123,83 @@ public class HomeWorkMain {
     }
 
     private void tre() {
+        Lock lock = new ReentrantLock();
+        Object aa = new Object();
         Object oo = new Object();
         MyThread thread1 = new MyThread("thread1 -- ");
-        thread1.setOo(oo);
+        thread1.setOo(oo, aa,lock);
         thread1.start();
-        synchronized (oo) {
+        try {
+            lock.lock();
+            while (true) {
+                Thread.sleep(10);
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } finally {
+            lock.unlock();
+        }
+        synchronized (aa) {
             for (int i = 0; i < 100; i++) {
                 if (i == 20) {
                     try {
-                        oo.wait(1000);
+                        Thread.sleep(5000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
                 }
-                System.out.println(Thread.currentThread().getName() + " -- " + i);
+                System.out.println(Thread.currentThread().getName() + "aa -- " + i);
+            }
+            synchronized (oo) {
+                for (int i = 0; i < 30; i++) {
+                    System.out.println(Thread.currentThread().getName() + "oo -- " + i);
+                }
             }
         }
+
     }
-static class MyThread extends Thread {
-    private String name;
-    private Object oo;
-    public void setOo(Object oo) {
-        this.oo = oo;
-    }
-    public MyThread(String name) {
-        this.name = name;
-    }
-    @Override
-    public void run() {
-        synchronized (oo) {
-            for (int i = 0; i < 100; i++) {
-                System.out.println(name + i);
+
+    static class MyThread extends Thread {
+        private String name;
+        private Object oo;
+        private Object aa;
+        private Lock lock;
+
+        public void setOo(Object oo, Object aa, Lock lock) {
+            this.oo = oo;
+            this.aa = aa;
+            this.lock = lock;
+        }
+
+        public MyThread(String name) {
+            this.name = name;
+        }
+
+        @Override
+        public void run() {
+
+            try {
+                lock.lock();
+                System.out.println("my thread get lock");
+            } finally {
+                lock.unlock();
             }
+            synchronized (oo) {
+                for (int i = 0; i < 100; i++) {
+                    System.out.println(name + i);
+                }
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                synchronized (aa) {
+                    for (int i = 0; i < 100; i++) {
+                        System.out.println(name + "aa: " + i);
+                    }
+                }
+            }
+
         }
     }
-}
 }

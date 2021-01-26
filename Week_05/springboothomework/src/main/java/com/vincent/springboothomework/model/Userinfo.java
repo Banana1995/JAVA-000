@@ -1,23 +1,24 @@
 package com.vincent.springboothomework.model;
 
+
 import javax.persistence.Entity;
-
-
-public class Frank  extends Userinfo implements People {
-
-    private String name;
+import javax.persistence.Id;
+@Entity
+public class Userinfo {
+    @Id
+    private String peopleName;
     private int age;
     private String habit;
     private String skinColor;
 
-    public void setName(String name) {
-        this.name = name;
+    public void setPeopleName(String peopleName) {
+        this.peopleName = peopleName;
     }
 
     @Override
     public String toString() {
         return "Frank{" +
-                "name='" + name + '\'' +
+                "name='" + peopleName + '\'' +
                 ", age=" + age +
                 ", habit='" + habit + '\'' +
                 ", skinColor='" + skinColor + '\'' +
@@ -44,19 +45,7 @@ public class Frank  extends Userinfo implements People {
         this.skinColor = skinColor;
     }
 
-    @Override
-    public String getName() {
-        return name;
-    }
 
 
-    @Override
-    public String getSkinColor() {
-        return skinColor;
-    }
 
-    @Override
-    public String shakeHands(String yourname) {
-        return null;
-    }
 }
