@@ -15,6 +15,8 @@ public class AsyncTask extends AbstractTask{
 
         log.info("task one thread Name:{}",Thread.currentThread().getName());
         System.out.println("async finish TaskOne");
+
+        log.info("async task one threadlocal :{}",AbstractTask.stringThreadLocal.get());
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -24,9 +26,10 @@ public class AsyncTask extends AbstractTask{
 
     @Override
     public void doTaskTwo() {
-
         log.info("task two thread Name:{}",Thread.currentThread().getName());
         System.out.println("async finish Tasktwo");
+
+        log.info("async task two threadlocal :{}",AbstractTask.stringThreadLocal.get());
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -38,6 +41,8 @@ public class AsyncTask extends AbstractTask{
     public void doTaskThree() {
 
         log.info("task three thread Name:{}",Thread.currentThread().getName());
+
+        log.info("async task three threadlocal :{}",AbstractTask.stringThreadLocal.get());
         System.out.println("async finish TaskThree");
         try {
             Thread.sleep(1000);

@@ -11,6 +11,7 @@ public class SyncTask extends  AbstractTask{
     @Override
     public void doTaskOne() {
         log.info("task one thread Name:{}",Thread.currentThread().getName());
+        log.info("task one threadlocal :{}",AbstractTask.stringThreadLocal.get());
         System.out.println("sync finish TaskOne");
         try {
             Thread.sleep(1000);
@@ -22,6 +23,8 @@ public class SyncTask extends  AbstractTask{
     @Override
     public void doTaskTwo() {
         log.info("task two thread Name:{}",Thread.currentThread().getName());
+
+        log.info("task two threadlocal :{}",AbstractTask.stringThreadLocal.get());
         System.out.println("sync finish TaskTwo");
         try {
             Thread.sleep(1000);
@@ -33,6 +36,8 @@ public class SyncTask extends  AbstractTask{
     @Override
     public void doTaskThree() {
         log.info("task three thread Name:{}",Thread.currentThread().getName());
+
+        log.info("task one three :{}",AbstractTask.stringThreadLocal.get());
         System.out.println("sync finish TaskThree");
         try {
             Thread.sleep(1000);
