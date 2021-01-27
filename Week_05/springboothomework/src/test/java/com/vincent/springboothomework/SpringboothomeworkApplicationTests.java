@@ -2,6 +2,7 @@ package com.vincent.springboothomework;
 
 import com.vincent.springboothomework.async.AsyncTask;
 import com.vincent.springboothomework.async.SyncTask;
+import com.vincent.springboothomework.lamdaaction.LamdaAction;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,12 @@ class SpringboothomeworkApplicationTests {
         syncTask.doTaskThree();
         long end = System.currentTimeMillis();
         log.info("--------sync task excute over ,cost time :{}", end - start);
+    }
+    @Autowired
+    private LamdaAction lamdaAction;
+    @Test
+    void lamdaActionTest(){
+        lamdaAction.lamdaCheck(123);
     }
 
 }

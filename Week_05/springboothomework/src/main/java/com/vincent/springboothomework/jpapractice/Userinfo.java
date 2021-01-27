@@ -1,9 +1,15 @@
 package com.vincent.springboothomework.jpapractice;
 
 
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 @Entity
+@Data
+@Getter
 public class Userinfo {
     @Id
     private String peopleName;
@@ -23,6 +29,10 @@ public class Userinfo {
                 ", habit='" + habit + '\'' +
                 ", skinColor='" + skinColor + '\'' +
                 '}';
+    }
+
+    public String getPeopleName() {
+        return peopleName;
     }
 
     public int getAge() {
