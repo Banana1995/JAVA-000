@@ -1,4 +1,4 @@
-package com.vincent.springboothomework.model;
+package com.vincent.springboothomework.jpapractice;
 
 
 import javax.persistence.Entity;

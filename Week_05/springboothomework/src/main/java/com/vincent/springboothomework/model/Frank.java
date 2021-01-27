@@ -1,6 +1,6 @@
 package com.vincent.springboothomework.model;
 
-import javax.persistence.Entity;
+import com.vincent.springboothomework.jpapractice.Userinfo;
 
 
 public class Frank  extends Userinfo implements People {

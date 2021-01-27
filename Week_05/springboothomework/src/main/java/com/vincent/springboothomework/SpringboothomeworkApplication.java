@@ -12,10 +12,13 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import java.sql.SQLException;
-
+//@EnableTransactionManagement
 @SpringBootApplication
+@EnableAsync
 public class SpringboothomeworkApplication implements ApplicationContextAware , DisposableBean {
     private static ApplicationContext staticContext;
 
