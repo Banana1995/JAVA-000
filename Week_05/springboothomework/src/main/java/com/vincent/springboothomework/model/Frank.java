@@ -5,6 +5,9 @@ import com.vincent.springboothomework.jpapractice.Userinfo;
 
 public class Frank  extends Userinfo implements People {
 
+    public Frank(int age){
+
+    }
     private String name;
     private int age;
     private String habit;

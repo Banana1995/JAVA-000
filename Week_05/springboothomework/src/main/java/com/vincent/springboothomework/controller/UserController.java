@@ -25,7 +25,7 @@ public class UserController {
 
     @RequestMapping("adduser")
     public String addUser() throws SQLException {
-        Frank frank = new Frank();
+        Frank frank = new Frank(4);
         frank.setAge(123);
         frank.setHabit("rest controller ");
         frank.setSkinColor("white");

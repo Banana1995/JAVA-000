@@ -9,7 +9,7 @@ public class PeopleConfiguration {
 
     @Bean
     Frank getFrank() {
-        Frank frank = new Frank();
+        Frank frank = new Frank(3);
         frank.setPeopleName("frank by autoconfiguration");
         frank.setHabit("i like study");
         frank.setSkinColor("yellow");
