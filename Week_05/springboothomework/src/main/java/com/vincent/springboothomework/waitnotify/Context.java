@@ -19,7 +19,6 @@ public class Context {
 //        ThreadB bt = new ThreadB();
 //        bt.setLock(lock);
 //        bt.start();
-
         ThreadA a = new ThreadA();
         a.start();
         ThreadB b = new ThreadB();

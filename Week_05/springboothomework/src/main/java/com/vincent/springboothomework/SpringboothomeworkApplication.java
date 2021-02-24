@@ -1,21 +1,17 @@
 package com.vincent.springboothomework;
 
-import com.vincent.springboothomework.autoconfiguration.PeopleAutoConfiguration;
-import com.vincent.springboothomework.jdbcpractice.UserHandle;
-import com.vincent.springboothomework.model.Frank;
+import com.alibaba.fastjson.JSON;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.scheduling.annotation.EnableAsync;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import java.sql.SQLException;
+import java.util.HashMap;
+
 //@EnableTransactionManagement
 @SpringBootApplication
 @EnableAsync
@@ -32,6 +28,8 @@ public class SpringboothomeworkApplication implements ApplicationContextAware , 
 //        UserHandle userHandle = staticContext.getBean(UserHandle.class);
 //        userHandle.insert(bean);
 //        System.exit(-1);
+
+
     }
 
     @Override

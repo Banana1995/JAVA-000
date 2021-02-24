@@ -1,5 +1,6 @@
 package com.vincent.springboothomework.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.vincent.springboothomework.jdbcpractice.UserHandle;
 import com.vincent.springboothomework.jpapractice.PeopleDao;
 import com.vincent.springboothomework.model.Frank;
@@ -53,6 +54,7 @@ public class UserController {
         for (Userinfo re : res) {
             resStr.append(re.toString()).append("/n");
         }
+        String s = JSON.toJSONString(res);
         return resStr.toString();
     }
     @Autowired
