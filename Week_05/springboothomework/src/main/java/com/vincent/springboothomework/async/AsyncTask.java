@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 public class AsyncTask extends AbstractTask{
 
     @Override
-    public void doTaskOne() {
+    public final void doTaskOne() {
 
         log.info("task one thread Name:{}",Thread.currentThread().getName());
         System.out.println("async finish TaskOne");
@@ -34,6 +34,9 @@ public class AsyncTask extends AbstractTask{
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
+        }finally {
+
+            AbstractTask.stringThreadLocal.remove();
         }
     }
 

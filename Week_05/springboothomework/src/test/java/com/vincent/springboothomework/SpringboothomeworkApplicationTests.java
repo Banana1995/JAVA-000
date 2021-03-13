@@ -10,6 +10,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.concurrent.*;
+
 @SpringBootTest
 @Slf4j
 class SpringboothomeworkApplicationTests {
@@ -23,6 +25,16 @@ class SpringboothomeworkApplicationTests {
     @Autowired
     private AsyncTask asyncTask;
 
+    @Test
+    void executorPoolTest() throws ExecutionException, InterruptedException {
+        ExecutorService executor = Executors.newFixedThreadPool(2);
+        Future<String> res = executor.submit(() -> {
+            System.out.println("fhh33");
+            return "ssss2232";
+        });
+        String s = res.get();
+        System.out.println(s);
+    }
 
     @Test
     void asyncTaskExcute() {

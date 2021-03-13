@@ -12,6 +12,9 @@ public class Context {
     private static Semaphore C = new Semaphore(0);
 
     public static void main(String[] args) {
+        String a = "123";
+        print(a);
+        System.out.println(a);
 //        WaitNotifyLock lock = new WaitNotifyLock();
 //        ThreadA at = new ThreadA();
 //        at.setLock(lock);
@@ -19,14 +22,19 @@ public class Context {
 //        ThreadB bt = new ThreadB();
 //        bt.setLock(lock);
 //        bt.start();
-        ThreadA a = new ThreadA();
-        a.start();
+//        ThreadA a = new ThreadA();
+//        a.start();
         ThreadB b = new ThreadB();
         b.start();
         ThreadC c = new ThreadC();
         c.start();
     }
 
+    static void  print(String a){
+        System.out.println(a);
+        a = "234";
+        System.out.println("after is " + a);
+    }
 
     static class ThreadA extends Thread {
         @SneakyThrows
