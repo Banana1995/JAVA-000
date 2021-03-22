@@ -1,4 +1,4 @@
-package com.weekthree.netty.action.nettyclient;
+package com.weekthree.netty.action.gatewayserver;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.PooledByteBufAllocator;
@@ -14,17 +14,20 @@ import org.apache.log4j.BasicConfigurator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class NettyGateway {
+/**
+ * 基于netty，作为一个网关服务端，接收客户端请求后，做过滤路由操作再将请求转发给后端服务
+ */
+public class NettyGatewayServer {
 
-    private String proxyServer;
-    private int proxyPort;
+//    private String proxyServer;
+//    private int proxyPort;
 
-    public NettyGateway(String proxyServer, String proxyPort) {
-        this.proxyServer = proxyServer;
-        this.proxyPort = Integer.valueOf(proxyPort);
-    }
+//    public NettyGatewayServer(String proxyServer, String proxyPort) {
+//        this.proxyServer = proxyServer;
+//        this.proxyPort = Integer.valueOf(proxyPort);
+//    }
 
-    private static Logger logger = LoggerFactory.getLogger(NettyGateway.class);
+    private static Logger logger = LoggerFactory.getLogger(NettyGatewayServer.class);
 
     public void run() {
         BasicConfigurator.configure();
@@ -41,13 +44,11 @@ public class NettyGateway {
                 .option(EpollChannelOption.SO_REUSEPORT, true)
                 .childOption(ChannelOption.SO_KEEPALIVE, true)
                 .option(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT);
-
         sb.group(bossEventLoop, workerEventLoop).channel(NioServerSocketChannel.class)
-                .handler(new LoggingHandler(LogLevel.INFO)).childHandler(new GatewayInit());
-
+                .handler(new LoggingHandler(LogLevel.INFO)).childHandler(new GatewayInitializer());
         try {
-            Channel channel = sb.bind(proxyPort).sync().channel();
-            logger.info("开启netty http服务器，bossEventLoop监听地址和端口为 http://127.0.0.1:" + proxyPort + '/');
+            Channel channel = sb.bind(GatewayConstant.gatewayPort).sync().channel();
+            logger.info("开启netty gateway ，监听地址和端口为 http://127.0.0.1:" + GatewayConstant.gatewayPort + '/');
             channel.closeFuture().sync();
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -55,16 +56,7 @@ public class NettyGateway {
             bossEventLoop.shutdownGracefully();
             workerEventLoop.shutdownGracefully();
         }
-        Runnable runnable = new Runnable() {
-            private int abc;
-            @Override
-            public void run() {
-                int cc = abc + 3;
-                System.out.println(cc);
-            }
-        };
-        Thread thread = new Thread();
-        thread.run();
+
 
     }
 

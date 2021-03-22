@@ -1,14 +1,14 @@
-package com.weekthree.netty.action.server;
+package com.weekthree.netty.action.backendserver;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class BackEndServer {
+public class SocketBackEndServer {
 
     public static void main(String[] args) throws IOException {
-        ServerSocket serverSocket = new ServerSocket(8801);
+        ServerSocket serverSocket = new ServerSocket(8802);
         while (true) {
             try {
                 Socket socket = serverSocket.accept();

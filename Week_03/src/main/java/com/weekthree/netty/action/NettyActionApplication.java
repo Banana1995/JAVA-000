@@ -1,15 +1,16 @@
 package com.weekthree.netty.action;
 
-import com.weekthree.netty.action.nettyclient.NettyGateway;
+import com.weekthree.netty.action.gatewayserver.NettyGatewayServer;
 
 public class NettyActionApplication {
 
 
 
     public static void main(String[] args) {
-        NettyGateway nettyGateway = new NettyGateway("127.0.0.1","8899");
-        nettyGateway.run();
+        NettyGatewayServer nettyGatewayServer = new NettyGatewayServer();
+        nettyGatewayServer.run();
     }
+
 
 
 }
