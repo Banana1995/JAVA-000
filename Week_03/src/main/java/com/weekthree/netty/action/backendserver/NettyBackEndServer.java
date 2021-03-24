@@ -1,5 +1,8 @@
 package com.weekthree.netty.action.backendserver;
 
+import com.weekthree.netty.action.gatewayroute.RoundRobinStrategy;
+import com.weekthree.netty.action.gatewayroute.RouteStrategy;
+import com.weekthree.netty.action.gatewayserver.NettyGatewayServer;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
@@ -10,6 +13,8 @@ import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpServerCodec;
 import org.apache.log4j.BasicConfigurator;
 
+import java.util.concurrent.*;
+
 public class NettyBackEndServer {
 
     private int backEndPort;
@@ -19,8 +24,24 @@ public class NettyBackEndServer {
     }
 
     public static void main(String[] args) {
-        NettyBackEndServer backEndServer = new NettyBackEndServer(8802);
-        backEndServer.run();
+        ExecutorService service = new ThreadPoolExecutor(4, 4, 60L, TimeUnit.SECONDS,
+                new ArrayBlockingQueue<>(100), Executors.defaultThreadFactory());
+
+        RouteStrategy strategy = new RoundRobinStrategy();
+
+        for (int i = 8085; i <= 8088; i++) {
+            NettyBackEndServer backEndServer = new NettyBackEndServer(i);
+            String backendUri = "http:localhost:" + i;
+            strategy.regesterBackendServer(backendUri);
+            service.execute(backEndServer::run);
+        }
+//        NettyBackEndServer backEndServer = new NettyBackEndServer(8082);
+//        String backendUri = "http:localhost:" + "8082";
+//        strategy.regesterBackendServer(backendUri);
+//        backEndServer.run();
+        NettyGatewayServer gatewayServer = new NettyGatewayServer();
+        gatewayServer.setRouteStrategy(strategy);
+        gatewayServer.run();
     }
 
     public void run() {
@@ -42,12 +63,12 @@ public class NettyBackEndServer {
             Channel channel = sbs.bind(backEndPort).sync().channel();
             System.out.println("backend server start port at " + backEndPort);
             channel.closeFuture().sync();
-            System.out.println("backend server start over !");
         } catch (InterruptedException e) {
             e.printStackTrace();
         } finally {
             bossEventGroup.shutdownGracefully();
             workerEventGroup.shutdownGracefully();
+            System.out.println("backend server  port : " + backEndPort + "close");
         }
     }
 

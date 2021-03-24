@@ -16,8 +16,7 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<HttpRequest>
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, HttpRequest httpRequest) throws Exception {
 
-        String resp = "here is backend server, port is "+backendPort;
-//        resp = String.format(resp, backendPort);
+        String resp = "here is backend， server port is "+backendPort;
 
         FullHttpResponse response = new DefaultFullHttpResponse(httpRequest.protocolVersion(),
                 HttpResponseStatus.OK, Unpooled.wrappedBuffer(resp.getBytes()));
@@ -25,6 +24,5 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<HttpRequest>
                 .setInt(HttpHeaderNames.CONTENT_LENGTH, response.content().readableBytes());
 
         channelHandlerContext.writeAndFlush(response);
-//        System.out.println(back);
     }
 }

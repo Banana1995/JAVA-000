@@ -1,5 +1,6 @@
 package com.weekthree.netty.action.gatewayserver;
 
+import com.weekthree.netty.action.gatewayroute.RouteStrategy;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.channel.Channel;
@@ -19,13 +20,12 @@ import org.slf4j.LoggerFactory;
  */
 public class NettyGatewayServer {
 
-//    private String proxyServer;
-//    private int proxyPort;
 
-//    public NettyGatewayServer(String proxyServer, String proxyPort) {
-//        this.proxyServer = proxyServer;
-//        this.proxyPort = Integer.valueOf(proxyPort);
-//    }
+    private RouteStrategy routeStrategy;
+
+    public void setRouteStrategy(RouteStrategy routeStrategy) {
+        this.routeStrategy = routeStrategy;
+    }
 
     private static Logger logger = LoggerFactory.getLogger(NettyGatewayServer.class);
 
@@ -44,11 +44,15 @@ public class NettyGatewayServer {
                 .option(EpollChannelOption.SO_REUSEPORT, true)
                 .childOption(ChannelOption.SO_KEEPALIVE, true)
                 .option(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT);
+        GatewayInitializer initializer = new GatewayInitializer();
+        initializer.setRouteStrategy(routeStrategy);
+
         sb.group(bossEventLoop, workerEventLoop).channel(NioServerSocketChannel.class)
-                .handler(new LoggingHandler(LogLevel.INFO)).childHandler(new GatewayInitializer());
+                .handler(new LoggingHandler(LogLevel.INFO)).childHandler(initializer);
         try {
             Channel channel = sb.bind(GatewayConstant.gatewayPort).sync().channel();
-            logger.info("开启netty gateway ，监听地址和端口为 http://127.0.0.1:" + GatewayConstant.gatewayPort + '/');
+            System.out.println("开启netty gateway ，监听地址和端口为 http://127.0.0.1:" + GatewayConstant.gatewayPort + '/');
+//            logger.info("开启netty gateway ，监听地址和端口为 http://127.0.0.1:" + GatewayConstant.gatewayPort + '/');
             channel.closeFuture().sync();
         } catch (InterruptedException e) {
             e.printStackTrace();

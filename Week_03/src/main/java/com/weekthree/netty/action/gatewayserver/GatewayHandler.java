@@ -1,6 +1,7 @@
 package com.weekthree.netty.action.gatewayserver;
 
 import com.weekthree.netty.action.filter.HeadNameFilter;
+import com.weekthree.netty.action.gatewayroute.RouteStrategy;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -23,6 +24,12 @@ public class GatewayHandler extends ChannelInboundHandlerAdapter {
     private static Logger logger = LoggerFactory.getLogger(GatewayHandler.class);
 
     private HeadNameFilter headNameFilter;
+
+    private RouteStrategy routeStrategy;
+
+    public void setRouteStrategy(RouteStrategy routeStrategy) {
+        this.routeStrategy = routeStrategy;
+    }
 
     public void setHeadNameFilter(HeadNameFilter headNameFilter) {
         this.headNameFilter = headNameFilter;
@@ -68,7 +75,7 @@ public class GatewayHandler extends ChannelInboundHandlerAdapter {
         try {
             String originUri = fullRequest.uri();
             //路由策略,将原始的uri路由到backend的uri上去
-            String backendUri = "http:localhost:" + "8802";
+            String backendUri = routeStrategy.getBackEndUri();
             Request request = new Request.Builder().url(backendUri).build();
             Response response = client.newCall(request).execute();
             byte[] body = response.body().bytes();

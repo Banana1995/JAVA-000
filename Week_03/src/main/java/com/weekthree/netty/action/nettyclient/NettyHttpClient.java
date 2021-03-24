@@ -52,7 +52,6 @@ public class NettyHttpClient {
             } finally {
                 fu.close();
             }
-
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
