@@ -12,22 +12,23 @@ import java.util.concurrent.*;
 
 public class ClientTest {
 
-//    @Before
+    @Before
     public void startGatewayAndServer() {
-//        ExecutorService service = new ThreadPoolExecutor(2, 4, 60L, TimeUnit.SECONDS,
-//                new ArrayBlockingQueue<>(100), Executors.defaultThreadFactory());
-//
-//        RouteStrategy strategy = new RoundRobinStrategy();
-//        for (int i = 8085; i <= 8088; i++) {
-//            NettyBackEndServer backEndServer = new NettyBackEndServer(i);
-//            String backendUri = "http:localhost:" + i;
-//            strategy.regesterBackendServer(backendUri);
-//            service.execute(backEndServer::run);
-//        }
-//
-//        NettyGatewayServer gatewayServer = new NettyGatewayServer();
-//        gatewayServer.setRouteStrategy(strategy);
-//        service.execute(gatewayServer::run);
+        //此处线程数量需要足够，否则无法提供网关服务
+        ExecutorService service = new ThreadPoolExecutor(6, 6, 60L, TimeUnit.SECONDS,
+                new ArrayBlockingQueue<>(100), Executors.defaultThreadFactory());
+
+        RouteStrategy strategy = new RoundRobinStrategy();
+        for (int i = 8085; i <= 8088; i++) {
+            NettyBackEndServer backEndServer = new NettyBackEndServer(i);
+            String backendUri = "http:localhost:" + i;
+            strategy.regesterBackendServer(backendUri);
+            service.execute(backEndServer::run);
+        }
+
+        NettyGatewayServer gatewayServer = new NettyGatewayServer();
+        gatewayServer.setRouteStrategy(strategy);
+        service.execute(gatewayServer::run);
     }
 
     @lombok.SneakyThrows
